@@ -10,7 +10,7 @@ class FFTPeriodicityDetector:
     """
     Fast Fourier Transform (FFT) based periodicity detector.
 
-    Find the periods in a given signal or series using FFT.
+    Find the periods in a given signal or series using FFT [1]_.
 
     Parameters
     ----------
@@ -20,8 +20,8 @@ class FFTPeriodicityDetector:
     References
     ----------
     .. [1] Hyndman, R.J., & Athanasopoulos, G. (2021)
-    Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia.
-    OTexts.com/fpp3/useful-predictors.html#fourier-series. Accessed on 09-15-2024.
+       Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia.
+       https://OTexts.com/fpp3/useful-predictors.html#fourier-series. Accessed on 09-15-2024.
 
     Examples
     --------
@@ -71,6 +71,11 @@ class FFTPeriodicityDetector:
             function for more information on the accepted formats of this
             parameter.
 
+        Returns
+        -------
+        NDArray
+            List of detected periods.
+
         See Also
         --------
         numpy.fft
@@ -79,11 +84,6 @@ class FFTPeriodicityDetector:
             Remove linear trend along axis from data.
         scipy.signal.get_window
             Return a window of a given length and type.
-
-        Returns
-        -------
-        NDArray
-            List of detected periods.
         """
         # Detrend data
         self.y = self.y if detrend_func is None else detrend(self.y, detrend_func)

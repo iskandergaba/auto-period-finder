@@ -11,7 +11,7 @@ class ACFPeriodicityDetector:
     Autocorrelation function (ACF) based periodicity detector.
 
     Find the periods in a given signal or series using its ACF. A lag value
-    is considered a period if it is a local maximum of the ACF.
+    is considered a period if it is a local maximum of the ACF [1]_.
 
     Parameters
     ----------
@@ -21,8 +21,8 @@ class ACFPeriodicityDetector:
     References
     ----------
     .. [1] Hyndman, R.J., & Athanasopoulos, G. (2021)
-    Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia.
-    OTexts.com/fpp3/acf.html. Accessed on 09-15-2024.
+       Forecasting: principles and practice, 3rd edition, OTexts: Melbourne, Australia.
+       https://OTexts.com/fpp3/acf.html. Accessed on 09-15-2024.
 
     Examples
     --------
@@ -79,6 +79,11 @@ class ACFPeriodicityDetector:
             The correlation function to be used to calculate the ACF of the time
             series. Possible values are ['pearson', 'spearman', 'kendall'].
 
+        Returns
+        -------
+        NDArray
+            List of detected periods.
+
         See Also
         --------
         scipy.signal.detrend
@@ -91,12 +96,6 @@ class ACFPeriodicityDetector:
             Pearson correlation coefficient and p-value for testing non-correlation.
         scipy.stats.spearmanr
             Calculate a Spearman correlation coefficient with associated p-value.
-
-
-        Returns
-        -------
-        NDArray
-            List of detected periods.
         """
         # Detrend data
         self.y = self.y if detrend_func is None else detrend(self.y, detrend_func)
