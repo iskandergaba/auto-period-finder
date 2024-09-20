@@ -26,27 +26,34 @@ class ACFPeriodicityDetector:
 
     Examples
     --------
-    Start by loading a timeseries datasets.
+    Start by loading a timeseries datasets and resampling to an appropriate
+    frequency.
 
     >>> from statsmodels.datasets import co2
     >>> data = co2.load().data
-
-    You can resample the data to whatever frequency you want.
-
     >>> data = data.resample("ME").mean().ffill()
 
     Use ACFPeriodicityDetector to find the list of seasonality periods using the ACF.
 
+    >>> from pyriodicity import ACFPeriodicityDetector
     >>> acf_detector = ACFPeriodicityDetector(data)
-    >>> periods = acf_detector.fit()
+    >>> acf_detector.fit()
+    array([ 12,  24,  36,  48,  60,  72,  84,  96, 108, 120, 132, 143, 155,
+       167, 179, 191, 203, 215, 227, 239, 251])
 
-    You can get the most prominent period by setting max_period_count to 1
-
-    >>> acf_detector.fit(max_period_count=1)
-
-    You can also use a different correlation function like Spearman
+    You can use a different correlation function like Spearman
 
     >>> acf_detector.fit(correlation_func="spearman")
+    array([ 12,  24,  36,  48,  60,  72,  84,  96, 108, 120, 132, 143, 155,
+       167, 179, 191, 203, 215, 227, 239, 251])
+
+    All of the returned values are either multiples of 12 or very close to it,
+    suggesting a clear yearly periodicity.
+    You can also get the most prominent period length value by setting
+    ``max_period_count`` to 1.
+
+    >>> acf_detector.fit(max_period_count=1)
+    array([12])
     """
 
     def __init__(self, endog: ArrayLike):

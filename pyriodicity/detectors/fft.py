@@ -25,24 +25,34 @@ class FFTPeriodicityDetector:
 
     Examples
     --------
-    Start by loading a timeseries dataset.
+    Start by loading Mauna Loa Weekly Atmospheric CO2 Data from Statsmodels
+    and downsampling its data to a monthly frequency.
 
     >>> from statsmodels.datasets import co2
     >>> data = co2.load().data
-
-    You can resample the data to whatever frequency you want.
-
     >>> data = data.resample("ME").mean().ffill()
 
-    Use FFTPeriodicityDetector to find the list of periods using FFT, ordered
+    Use ``FFTPeriodicityDetector`` to find the list of periods using FFT, ordered
     by corresponding frequency amplitudes in a descending order.
 
+    >>> from pyriodicity import FFTPeriodicityDetector
     >>> fft_detector = FFTPeriodicityDetector(data)
-    >>> periods = fft_detector.fit()
+    >>> fft_detector.fit()
+    array([ 12,   6, 175,  44, 132,  88,  11,  13, 105,  58,  66,  75,  14,
+        25,  18,  48,  10,  31,   4,   9,   7,  19,  23,   8,  38,  35,
+        40,  28,  20,   3,   5,  15,  29,  22,   2,  24,  53,  33,  26,
+        16,  17,  21])
 
-    You can optionally specify a window function for pre-processing.
+    ``FFTPeriodicityDetector`` tends to be quite sensitive to noise and find
+    many false period lengths. Depending on your data, you can choose to 
+    apply a window function to get different results. You can also limit the
+    number returned period length values to the 3 most signficant ones.
 
-    >>> periods = fft_detector.fit(window_func="blackman")
+    >>> fft_detector.fit(window_func="blackman", max_period_count=3)
+    array([12, 13, 11])
+
+    As you can see, results are concentrated around the period length value 12,
+    indicating a yearly periodicity.
     """
 
     def __init__(self, endog: ArrayLike):

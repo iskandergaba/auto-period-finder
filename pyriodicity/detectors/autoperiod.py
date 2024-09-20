@@ -28,27 +28,35 @@ class Autoperiod:
 
     Examples
     --------
-    Start by loading a timeseries dataset.
+    Start by loading a timeseries datasets and resampling to an appropriate
+    frequency.
 
     >>> from statsmodels.datasets import co2
     >>> data = co2.load().data
-
-    You can resample the data to whatever frequency you want.
-
     >>> data = data.resample("ME").mean().ffill()
 
-    Use Autoperiod to find the list of periods in the data.
+    Use ``Autoperiod`` to find the list of periods in the data.
 
+    >>> from pyriodicity import Autoperiod
     >>> autoperiod = Autoperiod(data)
-    >>> periods = autoperiod.fit()
+    >>> autoperiod.fit()
+    array([12])
 
-    You can specify a lower percentile value for a more lenient detection
+    You can specify a lower percentile value should you wish for
+    a more lenient detection
 
     >>> autoperiod.fit(percentile=90)
+    array([12])
 
-    Or increase the number of random data permutations for a better power threshold estimation
+    You can also increase the number of random data permutations
+    for a more robust power threshold estimation
 
     >>> autoperiod.fit(k=300)
+    array([12])
+
+    ``Autoperiod`` is generally a quite robust periodicity detection method.
+    The detection algorthim found exactly one periodicity of 12, suggesting
+    a strong yearly periodicity.
     """
 
     def __init__(self, endog: ArrayLike):
