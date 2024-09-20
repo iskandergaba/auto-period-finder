@@ -1,7 +1,6 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath(".."))
-sys.path.insert(0, os.path.abspath("reference"))
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -20,8 +19,7 @@ release = "0.2.0"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "sphinx.ext.autosummary",
-    "sphinx.ext.napoleon",
+    "numpydoc",
     "pydata_sphinx_theme",
 ]
 templates_path = ["_templates"]
@@ -29,20 +27,10 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # Options for autodoc
 autodoc_typehints = "none"
-autodoc_extras = ["exclude-members", "__init__"]
 
 # Options for numpydoc
-# numpydoc_show_class_members = False
-# numpydoc_show_inherited_class_members = True
-
-# Napoleon settings
-napoleon_google_docstring = True
-napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = False
-
-# Options for autosummary
-autosummary_generate = True
-# numpydoc_class_members_toctree = False
+# https://numpydoc.readthedocs.io/en/latest/install.html#configuration
+numpydoc_show_class_members = False
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

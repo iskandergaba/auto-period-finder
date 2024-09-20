@@ -1,5 +1,5 @@
 ==============
-Reference
+API Reference
 ==============
 
 .. currentmodule:: pyriodicity
@@ -7,7 +7,7 @@ Reference
 .. autosummary::
    :recursive:
    :toctree: generated
-   
+
    ~ACFPeriodicityDetector
    ~Autoperiod
    ~FFTPeriodicityDetector
