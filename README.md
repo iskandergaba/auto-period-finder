@@ -78,8 +78,11 @@ poetry self add poetry-plugin-export
 # Export the package dependencies to requirements.txt
 poetry export --output requirements.txt
 
-# If you wish to export all the dependencies, including those needed for testing, run the following command
+# If you wish to include testing dependencies as well, run the following command
 poetry export --with test --output requirements-dev.txt
+
+# The same as above if you wish to export documentation dependencies
+poetry export --with docs --output requirements-doc.txt
 ```
 
 ## References
