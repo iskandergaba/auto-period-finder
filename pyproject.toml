@@ -8,7 +8,7 @@ readme = ["README.md"]
 repository = "https://github.com/iskandergaba/pyriodicity"
 
 authors = ["Iskander Gaba <iskander@hey.com>"]
-keywords = ["signal", "time", "series", "forecast", "analysis", "seasonality", "trend", "decomposition"]
+keywords = ["signal", "time", "series", "forecast", "analysis", "period", "periodicity", "seasonality", "trend", "cycle", "decomposition"]
 
 
 [tool.poetry.dependencies]
