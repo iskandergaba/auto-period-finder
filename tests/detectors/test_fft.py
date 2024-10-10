@@ -7,7 +7,7 @@ def test_co2_monthly_fft_find_all_periods():
     data = co2.load().data.resample("ME").mean().ffill()
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit()
-    assert len(periods) != 0
+    assert len(periods) > 0
 
 
 def test_co2_monthly_fft_find_first_two_periods():
@@ -22,7 +22,7 @@ def test_co2_daily_fft_find_strongest_period():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1)
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period():
@@ -30,7 +30,7 @@ def test_co2_weekly_fft_find_strongest_period():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1)
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period():
@@ -38,7 +38,7 @@ def test_co2_monthly_fft_find_strongest_period():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1)
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_barthann():
@@ -46,7 +46,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_barthann():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="barthann")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_barthann():
@@ -54,7 +54,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_barthann():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="barthann")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_barthann():
@@ -62,7 +62,7 @@ def test_co2_monthly_fft_find_strongest_period_window_func_barthann():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="barthann")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_bartlett():
@@ -70,7 +70,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_bartlett():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="bartlett")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_bartlett():
@@ -78,7 +78,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_bartlett():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="bartlett")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_bartlett():
@@ -86,7 +86,7 @@ def test_co2_monthly_fft_find_strongest_period_window_func_bartlett():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="bartlett")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_blackman():
@@ -94,7 +94,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_blackman():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="blackman")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_blackman():
@@ -102,7 +102,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_blackman():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="blackman")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_blackman():
@@ -110,7 +110,7 @@ def test_co2_monthly_fft_find_strongest_period_window_func_blackman():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="blackman")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_blackmanharris():
@@ -118,7 +118,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_blackmanharris():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="blackmanharris")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_blackmanharris():
@@ -126,7 +126,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_blackmanharris():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="blackmanharris")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_blackmanharris():
@@ -134,7 +134,7 @@ def test_co2_monthly_fft_find_strongest_period_window_func_blackmanharris():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="blackmanharris")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_boxcar():
@@ -142,7 +142,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_boxcar():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="boxcar")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_boxcar():
@@ -150,7 +150,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_boxcar():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="boxcar")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_boxcar():
@@ -158,7 +158,7 @@ def test_co2_monthly_fft_find_strongest_period_window_func_boxcar():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="boxcar")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_hamming():
@@ -166,7 +166,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_hamming():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="hamming")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_hamming():
@@ -174,7 +174,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_hamming():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="hamming")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_hamming():
@@ -182,7 +182,7 @@ def test_co2_monthly_fft_find_strongest_period_window_func_hamming():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="hamming")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_hann():
@@ -190,7 +190,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_hann():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="hann")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_hann():
@@ -198,7 +198,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_hann():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="hann")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_hann():
@@ -206,7 +206,7 @@ def test_co2_monthly_fft_find_strongest_period_window_func_hann():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="hann")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods
 
 
 def test_co2_daily_fft_find_strongest_period_window_func_tukey():
@@ -214,7 +214,7 @@ def test_co2_daily_fft_find_strongest_period_window_func_tukey():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="tukey")
     assert len(periods) == 1
-    assert periods[0] == 363
+    assert 363 in periods
 
 
 def test_co2_weekly_fft_find_strongest_period_window_func_tukey():
@@ -222,7 +222,7 @@ def test_co2_weekly_fft_find_strongest_period_window_func_tukey():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="tukey")
     assert len(periods) == 1
-    assert periods[0] == 52
+    assert 52 in periods
 
 
 def test_co2_monthly_fft_find_strongest_period_window_func_tukey():
@@ -230,4 +230,4 @@ def test_co2_monthly_fft_find_strongest_period_window_func_tukey():
     fft_detector = FFTPeriodicityDetector(data)
     periods = fft_detector.fit(max_period_count=1, window_func="tukey")
     assert len(periods) == 1
-    assert periods[0] == 12
+    assert 12 in periods

@@ -1,9 +1,8 @@
-from typing import Callable, Dict, List, Optional, Union
+from typing import Optional, Union
 
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
-from scipy.signal import detrend as _detrend
-from scipy.signal import get_window
+from scipy.signal import get_window, periodogram
 from scipy.stats import kendalltau, pearsonr, spearmanr
 
 
@@ -16,42 +15,71 @@ def to_1d_array(x: ArrayLike) -> NDArray:
 
 
 @staticmethod
-def remove_overloaded_kwargs(kwargs: Dict, args: List) -> Dict:
-    for arg in args:
-        kwargs.pop(arg, None)
-    return kwargs
-
-
-@staticmethod
-def seasonality_strength(seasonal: ArrayLike, resid: ArrayLike) -> float:
-    return max(0, 1 - np.var(resid) / np.var(seasonal + resid))
-
-
-@staticmethod
 def apply_window(x: ArrayLike, window_func: Union[str, float, tuple]) -> NDArray:
     return x * get_window(window=window_func, Nx=len(x))
 
 
 @staticmethod
-def detrend(
+def acf(
     x: ArrayLike,
-    method: Union[str, Callable[[ArrayLike], NDArray]],
+    lag_start: int,
+    lag_stop: int,
+    correlation_func: Optional[str] = "pearson",
 ) -> NDArray:
-    if isinstance(method, str):
-        return _detrend(x, type=method)
-    return method(x)
+    if not 0 <= lag_start < lag_stop <= len(x):
+        raise ValueError(
+            "Invalid lag values range ({}, {})".format(lag_start, lag_stop)
+        )
+    lag_values = np.arange(lag_start, lag_stop + 1, dtype=int)
+    if correlation_func == "spearman":
+        return np.array([spearmanr(x, np.roll(x, l)).statistic for l in lag_values])
+    elif correlation_func == "kendall":
+        return np.array([kendalltau(x, np.roll(x, l)).statistic for l in lag_values])
+    return np.array([pearsonr(x, np.roll(x, l)).statistic for l in lag_values])
 
 
 @staticmethod
-def acf(
-    x: ArrayLike,
-    nlags: int,
-    correlation_func: Optional[str] = "pearson",
-) -> NDArray:
-    if not 0 < nlags <= len(x):
-        raise ValueError("nlags must be a postive integer less than the data length")
-    if correlation_func == "spearman":
-        return np.array([spearmanr(x, np.roll(x, l)).statistic for l in range(nlags)])
-    elif correlation_func == "kendall":
-        return np.array([kendalltau(x, np.roll(x, l)).statistic for l in range(nlags)])
-    return np.array([pearsonr(x, np.roll(x, l)).statistic for l in range(nlags)])
+def power_threshold(
+    y: ArrayLike,
+    detrend_func: str,
+    k: int,
+    p: int,
+) -> float:
+    """
+    Compute the power threshold as the p-th percentile of the maximum
+    power values of the periodogram of k permutations of the data.
+
+    Parameters
+    ----------
+    y : array_like
+        Data to be investigated. Must be squeezable to 1-d.
+    detrend_func : str, default = 'linear'
+        The kind of detrending to be applied on the series. It can either be
+        'linear' or 'constant'.
+    k : int
+        The number of times the data is randomly permuted to compute
+        the maximum power values.
+    p : int
+        The percentile value used to compute the power threshold.
+        It determines the cutoff point in the sorted list of the maximum
+        power values from the periodograms of the permuted data.
+        Value must be between 0 and 100 inclusive.
+
+    See Also
+    --------
+    scipy.signal.periodogram
+        Estimate power spectral density using a periodogram.
+
+    Returns
+    -------
+    float
+        Power threshold of the target data.
+    """
+    if detrend_func is None:
+        detrend_func = False
+    max_powers = []
+    while len(max_powers) < k:
+        _, power_p = periodogram(np.random.permutation(y), detrend=detrend_func)
+        max_powers.append(power_p.max())
+    max_powers.sort()
+    return np.percentile(max_powers, p)

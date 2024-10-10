@@ -1,9 +1,9 @@
-from typing import Callable, Optional, Union
+from typing import Optional, Union
 
 from numpy.typing import ArrayLike, NDArray
-from scipy.signal import argrelmax
+from scipy.signal import argrelmax, detrend
 
-from pyriodicity.tools import acf, apply_window, detrend, to_1d_array
+from pyriodicity.tools import acf, apply_window, to_1d_array
 
 
 class ACFPeriodicityDetector:
@@ -55,7 +55,7 @@ class ACFPeriodicityDetector:
     def fit(
         self,
         max_period_count: Optional[int] = None,
-        detrend_func: Optional[Union[str, Callable[[ArrayLike], NDArray]]] = "linear",
+        detrend_func: Optional[str] = "linear",
         window_func: Optional[Union[str, float, tuple]] = None,
         correlation_func: Optional[str] = "pearson",
     ) -> NDArray:
@@ -66,10 +66,9 @@ class ACFPeriodicityDetector:
         ----------
         max_period_count : int, optional, default = None
             Maximum number of periods to look for.
-        detrend_func : str, callable, default = None
-            The kind of detrending to be applied on the series. It can either be
-            'linear' or 'constant' if it the parameter is of 'str' type, or a
-            custom function that returns a detrended series.
+        detrend_func : str, default = 'linear'
+            The kind of detrending to be applied on the signal. It can either be
+            'linear' or 'constant'.
         window_func : float, str, tuple optional, default = None
             Window function to be applied to the time series. Check
             'window' parameter documentation for scipy.signal.get_window
@@ -99,13 +98,18 @@ class ACFPeriodicityDetector:
             List of detected periods.
         """
         # Detrend data
-        self.y = self.y if detrend_func is None else detrend(self.y, detrend_func)
+        self.y = self.y if detrend_func is None else detrend(self.y, type=detrend_func)
 
         # Apply window on data
         self.y = self.y if window_func is None else apply_window(self.y, window_func)
 
         # Compute the ACF
-        acf_arr = acf(self.y, len(self.y) // 2, correlation_func)
+        acf_arr = acf(
+            self.y,
+            lag_start=0,
+            lag_stop=len(self.y) // 2,
+            correlation_func=correlation_func,
+        )
 
         # Find the local argmax of the first half of the ACF array
         local_argmax = argrelmax(acf_arr)[0]
